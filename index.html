@@ -2,10 +2,93 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="2;url=https://wa.link/8paradisevip" />
-  <title>Redirigiendo...</title>
+  <meta http-equiv="refresh" content="3;url=https://wa.link/8paradisevip" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paradise 🌴</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #7b2ff7, #f107a3);
+      color: white;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      padding: 20px;
+      z-index: 1;
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+  </style>
 </head>
 <body>
-  <p>Te llevamos a WhatsApp para crear tu usario 👤🎰</p>
+  <h1>Te llevamos a WhatsApp para crear tu usario 👤 🎰</h1>
+  <canvas id="fireworks"></canvas>
+
+  <script>
+    const canvas = document.getElementById('fireworks');
+    const ctx = canvas.getContext('2d');
+    let w, h;
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const particles = [];
+
+    function random(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    function createParticle() {
+      const x = random(w * 0.4, w * 0.6);
+      const y = random(h * 0.4, h * 0.6);
+      const count = 20;
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x,
+          y,
+          radius: random(2, 4),
+          color: `hsl(${Math.random() * 360}, 100%, 70%)`,
+          dx: random(-5, 5),
+          dy: random(-5, 5),
+          life: 60
+        });
+      }
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach((p, i) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = p.color;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        p.life--;
+        if (p.life <= 0) particles.splice(i, 1);
+      });
+      requestAnimationFrame(animate);
+    }
+
+    setInterval(createParticle, 1000);
+    animate();
+  </script>
 </body>
 </html>
